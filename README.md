@@ -21,8 +21,8 @@ This project demonstrates how to load an input texture and bind the input textur
 
 ## Project 01 - Blur filter
 
-A blur filter with two 1D kernels that together calculate a 7x7 gaussian blur filter. The glMemmoryBarrier function is needed as the compute shader has to
- run twice, once in the vertical direction and once in the horizontal direction. The output of the first pass then becomes the output for the second pass which
+A blur filter with two 1D kernels that together calculate a 7x7 gaussian blur filter. The glMemoryBarrier function is needed as the compute shader has to
+ run twice, once in the vertical direction and once in the horizontal direction. The output of the first pass then becomes the input for the second pass which
  writes the result in the final output texture.
 
 ## Project 02 - SSBO to Texture
