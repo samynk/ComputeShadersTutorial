@@ -24,3 +24,39 @@ This project demonstrates how to load an input texture and bind the input textur
 A blur filter with two 1D kernels that together calculate a 7x7 gaussian blur filter. The glMemmoryBarrier function is needed as the compute shader has to
  run twice, once in the vertical direction and once in the horizontal direction. The output of the first pass then becomes the output for the second pass which
  writes the result in the final output texture.
+
+## Project 02 - SSBO to Texture
+
+SSBO: Shader Storage Buffer Object
+
+This project showcases how to upload custom data to the gpu and use this data to generate an output texture. The concept of workgroups is further refined to include an 
+(integer) scalefactor between the input data and the output texture which allows you to represent a single element of the input to for example a 2x2, 4x4, ... pixel rectangle in the output.
+
+## Project 03 - Conway Game of Life
+
+Conway's game of life as a compute shader. The project uses two SSBO's to swap between the old and the new state of the game of life grid. The current SSBO is then converted to a texture to
+ show the current state of the simulation.
+
+## Project 04 - Flocking
+
+ This project shows a flocking simulation, again with two SSBO's to model the new state and the current state. This project also showcases using structured data (i.e. structs) in combination with
+  SSBO's. In 2D , the Boid just has a 2D point for its location and a 2D vector for its velocity. This is a happy coincidence, because one of the pitfalls of compute shaders is the possible difference
+  in memory layout for structured data. Mainly, on the gpu it is typical to layout data members on 16 byte boundaries, which can lead to wrong results on the GPU side.
+
+## Project 05 - Raytracer camera rays
+
+ Ah raytracing, every developer should have written at least a simple version of this classic parallel algorithm. To have a good idea if the implementation is going well, it is a good idea to split the implementation
+  up into multiple smaller step. In this project, the camera rays are implemented for a camera that is at the origin and is looking in the Z-direction (0,0,1). The ray directions are normalized and a separate compute shader
+   is then used to represent the ray directions as colors, which should result in a nice looking gradient. (xyz -> rgb).
+
+## Project 06 - Raytracer sphere scene
+
+A list of sphere data is uploaded as an SSBO in this project. For each pixel of the output, the corresponding ray direction is sampled and the distance of the hit with the center is calculated. A depth buffer SSBO is used
+ to compare the depth values. This is not strictly necessary as the projects processes one pixel at the time and has only one list of the same primitive type. However when combining multiple primitives this depth buffer will be necessary. 
+
+ The spheres are all flat shaded, as there are no lights yet.
+
+ ## Project 07 - Raytracer sphere scene with camera (in progress)
+
+ Interactivity makes everything nicer. This project adds a camera to the raytracer and makes it possible to move around.
+ 
