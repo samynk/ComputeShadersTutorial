@@ -58,5 +58,5 @@ A list of sphere data is uploaded as an SSBO in this project. For each pixel of 
 
  ## Project 07 - Raytracer sphere scene with camera (in progress)
 
- Interactivity makes everything nicer. This project adds a camera to the raytracer and makes it possible to move around.
+ Interactivity makes everything nicer. This project adds a camera to the raytracer and makes it possible to move around. This project also has a hardcoded light position that is used for a simple cosine law diffuse light effect.
  
