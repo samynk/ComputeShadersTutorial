@@ -81,7 +81,7 @@ void ComputeWindow<C>::init()
 		
 		glfwMakeContextCurrent(m_pWindow);
 		glfwSetWindowUserPointer(m_pWindow, this);
-		//glfwSwapInterval(1);
+		// glfwSwapInterval(1);
 
 		// Initialize GLEW
 		glewExperimental = GL_TRUE; // Needed for core profile

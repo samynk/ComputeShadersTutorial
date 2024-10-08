@@ -4,7 +4,7 @@
 int main()
 {
 	try {
-		ComputeWindow<ConvertBuffer> window{ 1024,1024,"Conversion from buffer to texture" };
+		ComputeWindow<ConvertBuffer> window{ 512, 512, "Conversion from buffer to texture" };
 		window.init();
 		window.renderLoop();
 		window.close();

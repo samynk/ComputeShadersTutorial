@@ -1,0 +1,5 @@
+# Ignore everything in the out folder
+out/
+
+# Ignore everything in the .vs folder (Visual Studio files)
+.vs/

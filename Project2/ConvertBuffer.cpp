@@ -3,7 +3,7 @@
 
 ConvertBuffer::ConvertBuffer(GLuint width, GLuint height) :
 	m_ConvertComputeShader{ "computeshaders/convert_to_texture.glsl" },
-	m_GridData{ "patterns/spacefillersynth.rle", 0, width, height,1 },
+	m_GridData{ "patterns/spacefillersynth.rle", 0, width, height, 2 },
 	m_Width{ width },
 	m_Height{ height },
 	m_ScaleFactorLocation{ 0 },

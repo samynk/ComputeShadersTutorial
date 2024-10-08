@@ -49,7 +49,7 @@ void SphereRayTracer::init(const SurfaceRenderer& renderer)
 
 void SphereRayTracer::compute(const SurfaceRenderer& renderer)
 {
-	m_CameraPosition.z += 0.001f;
+	//m_CameraPosition.z += 0.001f;
 	// generate the rays
 	m_CameraRays.use();
 	m_Rays.bindAsCompute(0);

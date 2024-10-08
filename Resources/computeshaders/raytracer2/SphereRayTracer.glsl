@@ -31,6 +31,8 @@ layout(binding = 0, rgba8) writeonly uniform image2D outputTexture;
 uniform ivec2 imgDimension;
 uniform float maxDepthValue = 1000.0f; // Far value
 
+vec3 lightPos = vec3(-0.25,3,0.2);
+
 void main() {
     ivec2 gid = ivec2(gl_GlobalInvocationID.xy);
     uint index = gid.y * imgDimension.x + gid.x;
@@ -57,7 +59,10 @@ void main() {
 			if ( t0 > 0 && t0 < tBuffer[index] ) {
 				vec3 currentPos = t0 * rayDirection + rayOrigin;
 				vec3 currentNormal = (currentPos - sphereLoc) / r;
-				color = spheres[si].color;
+				vec3 lightVec = normalize ( lightPos - currentPos );
+				float Id = clamp(dot(lightVec,currentNormal),0.2,1);
+
+				color = Id * spheres[si].color;
 				tBuffer[index] = t0;
 			}
 		}

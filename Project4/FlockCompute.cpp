@@ -58,11 +58,9 @@ void FlockCompute::compute(const SurfaceRenderer& renderer)
 
 	glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
 
-	/*
 	m_ClearShader.use();
 	m_ClearShader.compute(renderer.getWidth(), renderer.getHeight());
 	glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);
-	*/
 
 	m_ConvertFlock.use();
 	switch (m_CurrentBufferID) {

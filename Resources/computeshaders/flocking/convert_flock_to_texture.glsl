@@ -18,7 +18,7 @@ uniform ivec2 outputDimension;
 const vec4 colorMap[] = vec4[](
     vec4(0.0, 0.0, 0.0, 1.0),  // 0 -> Black
     vec4(0.0, 1.0, 0.0, 1.0),  // 1 -> Red
-    vec4(0.0, 1.0, 0.0, 1.0)   // 2 -> Green
+    vec4(0.0, 162.0/255.0, 132.0/255.0, 1.0)   // 2 -> Blue
 );
 
 void main() {

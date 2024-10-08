@@ -3,7 +3,7 @@
 GameOfLife::GameOfLife(GLuint width, GLuint height) :
 	m_GameOfLifeShader{ "computeshaders/gameoflife/gameoflife.glsl" },
 	m_ConvertComputeShader{ "computeshaders/convert_to_texture.glsl" },
-	m_GridData0{ "patterns/spacefillersynth.rle", 0, width, height, 1 },
+	m_GridData0{ "patterns/spacefillersynth.rle", 0, width, height, 2 },
 	m_GridData1{ 1, width, height, 1},
 	m_Width{ width },
 	m_Height{ height },
