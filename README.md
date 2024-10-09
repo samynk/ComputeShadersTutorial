@@ -3,6 +3,11 @@ A set of projects that demonstrate various aspects of compute shaders, focused o
 
 The project uses GLFW for rendering the (single) output of the compute shaders. 
 
+## Building the software
+
+It is a CMake project, which means that you can either build it from the command line, or you can also open the project in Visual Studio or Visual Code to build and run the examples.
+In principle, the code should also run on Linux but this is untested as of now.
+
 ## Project 00 - Gray filter
 
 A simple gray filter that use the following formula to calculate the gray value:
