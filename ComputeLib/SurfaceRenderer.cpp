@@ -97,9 +97,6 @@ void SurfaceRenderer::setupQuad()
 
 void SurfaceRenderer::drawQuadWithTexture()
 {
-	// Bind texture
-	
-	
 	// Set the texture uniform
 	glUseProgram(m_ProgramID);
 	glUniform1i(glGetUniformLocation(m_ProgramID, "screenTexture"), 0);

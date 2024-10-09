@@ -1,5 +1,7 @@
 #include "SphereRayTracer.h"
 
+#include "glm/gtc/constants.hpp"
+
 SphereRayTracer::SphereRayTracer(GLuint width, GLuint height)
 	:
 	m_CameraRays{ "computeshaders/raytracer2/CameraRays.glsl" },
@@ -9,12 +11,14 @@ SphereRayTracer::SphereRayTracer(GLuint width, GLuint height)
 	m_Rays{ 0,width,height,1 },
 	m_Spheres{ 4 },
 	m_ImgDimensionLoc1{ 0 },
+	m_CameraMatrixLoc{ 0 },
 	m_ImgDimensionLoc2{ 0 },
 	m_ImgDimensionLoc3{ 0 },
 	m_MaxDepthValueLoc{ 0 },
 	m_NrOfSpheresLoc{ 0 },
 	m_CameraPositionLoc{ 0 },
-	m_CameraPosition{ 0,0,0 }
+	m_CameraPosition{ 0,0,0 },
+	m_Camera{ glm::vec3{0,0,0}, glm::vec3{0,1,0}, glm::vec3{1,0,0}, true }
 {
 }
 
@@ -41,6 +45,7 @@ void SphereRayTracer::init(const SurfaceRenderer& renderer)
 
 	m_ImgDimensionLoc1 = m_CameraRays.getParameterLocation("imgDimension");
 	m_CameraPositionLoc = m_CameraRays.getParameterLocation("cameraPosition");
+	m_CameraMatrixLoc = m_CameraRays.getParameterLocation("cameraMatrix");
 	m_ImgDimensionLoc2 = m_ClearDepthBuffer.getParameterLocation("imgDimension");
 	m_MaxDepthValueLoc = m_ClearDepthBuffer.getParameterLocation("maxDepthValue");
 	m_ImgDimensionLoc3 = m_SphereRayTracer.getParameterLocation("imgDimension");
@@ -49,12 +54,19 @@ void SphereRayTracer::init(const SurfaceRenderer& renderer)
 
 void SphereRayTracer::compute(const SurfaceRenderer& renderer)
 {
+	// to do replace with actual time
+	m_T += 0.005;
+	m_Phi = glm::pi<float>()/2 + glm::pi<float>() / 6 * sin(m_T);
+
+	m_Camera.setPhi(m_Phi);
+	m_Camera.update();
 	//m_CameraPosition.z += 0.001f;
 	// generate the rays
 	m_CameraRays.use();
 	m_Rays.bindAsCompute(0);
 	m_CameraRays.setUniformInteger2(m_ImgDimensionLoc1, renderer.getWidth(), renderer.getHeight());
 	m_CameraRays.setUniformFloat3(m_CameraPositionLoc, m_CameraPosition.x, m_CameraPosition.y, m_CameraPosition.z);
+	m_CameraRays.setUniformMatrix(m_CameraMatrixLoc, m_Camera.getCameraMatrix());
 	m_CameraRays.compute(renderer.getWidth(), renderer.getHeight());
 
 

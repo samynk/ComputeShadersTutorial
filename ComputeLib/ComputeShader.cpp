@@ -5,6 +5,8 @@
 #include <stdexcept>
 #include <vector>
 
+#include <glm/gtc/type_ptr.hpp>
+
 ComputeShader::ComputeShader(const std::string& fileLocation) :m_FileLocation{ fileLocation }
 {
 	std::ifstream inputFile{ m_FileLocation };
@@ -181,4 +183,9 @@ void ComputeShader::setUniformFloat(GLint paramLoc, GLfloat value)
 void ComputeShader::setUniformFloat3(GLint paramLoc, GLfloat x, GLfloat y, GLfloat z)
 {
 	glUniform3f(paramLoc, x, y, z);
+}
+
+void ComputeShader::setUniformMatrix(GLint paramLoc, const glm::mat4& matrix) {
+	glUniformMatrix4fv(paramLoc, 1, GL_FALSE, glm::value_ptr(matrix));
+	
 }

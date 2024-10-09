@@ -46,6 +46,7 @@ private:
 
 	GLFWwindow* m_pWindow;
 	SurfaceRenderer m_SurfaceRenderer;
+
 	C m_Compute;
 };
 

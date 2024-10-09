@@ -13,4 +13,7 @@ target_include_directories(ComputeLib PUBLIC
     ${stb_SOURCE_DIR}
 )
 
-target_link_libraries(ComputeLib PUBLIC AssetLib OpenGL::GL glfw libglew_static)
+target_link_libraries(ComputeLib PUBLIC AssetLib OpenGL::GL glfw glm libglew_static)
+
+ set_target_properties(ComputeLib PROPERTIES
+        FOLDER "DAE Libraries" )

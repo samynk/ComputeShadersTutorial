@@ -17,7 +17,7 @@ function(configure PROJECT_NAME PROJECT_FOLDER)
     )
 
     # Link libraries to the executable target
-    target_link_libraries(${PROJECT_NAME} PRIVATE OpenGL::GL glm::glm glfw libglew_static ComputeLib)
+    target_link_libraries(${PROJECT_NAME} PRIVATE OpenGL::GL glm::glm glfw libglew_static ComputeLib 3DLib)
 
     # Copy the resources folder after build
     add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD

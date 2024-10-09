@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include "GL/glew.h"
+#include "glm/glm.hpp"
 
 class ComputeShader
 {
@@ -25,6 +26,7 @@ public:
 	void setUniformInteger2(GLint paramLoc, GLint x, GLint y);
 	void setUniformFloat(GLint paramLoc, GLfloat x);
 	void setUniformFloat3(GLint paramLoc, GLfloat x, GLfloat y, GLfloat z);
+	void setUniformMatrix(GLint paramLoc, const glm::mat4& matrix);
 private:
 	std::string m_FileLocation;
 	bool m_SourceValid{ false };
