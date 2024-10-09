@@ -3,6 +3,11 @@ A set of projects that demonstrate various aspects of compute shaders, focused o
 
 The project uses GLFW for rendering the (single) output of the compute shaders. 
 
+## Building the software
+
+It is a CMake project, which means that you can either build it from the command line, or you can also open the project in Visual Studio or Visual Code to build and run the examples.
+In principle, the code should also run on Linux but this is untested as of now.
+
 ## Project 00 - Gray filter
 
 A simple gray filter that use the following formula to calculate the gray value:
@@ -21,8 +26,8 @@ This project demonstrates how to load an input texture and bind the input textur
 
 ## Project 01 - Blur filter
 
-A blur filter with two 1D kernels that together calculate a 7x7 gaussian blur filter. The glMemmoryBarrier function is needed as the compute shader has to
- run twice, once in the vertical direction and once in the horizontal direction. The output of the first pass then becomes the output for the second pass which
+A blur filter with two 1D kernels that together calculate a 7x7 gaussian blur filter. The glMemoryBarrier function is needed as the compute shader has to
+ run twice, once in the vertical direction and once in the horizontal direction. The output of the first pass then becomes the input for the second pass which
  writes the result in the final output texture.
 
 ## Project 02 - SSBO to Texture
@@ -58,5 +63,5 @@ A list of sphere data is uploaded as an SSBO in this project. For each pixel of 
 
  ## Project 07 - Raytracer sphere scene with camera (in progress)
 
- Interactivity makes everything nicer. This project adds a camera to the raytracer and makes it possible to move around.
+ Interactivity makes everything nicer. This project adds a camera to the raytracer and makes it possible to move around. This project also has a hardcoded light position that is used for a simple cosine law diffuse light effect.
  
