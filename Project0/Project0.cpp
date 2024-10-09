@@ -1,5 +1,4 @@
-﻿using namespace std;
-#include "ComputeWindow.h"
+﻿#include "ComputeWindow.h"
 #include "GrayFilter.h"
 #include <string>
 #include <iostream>

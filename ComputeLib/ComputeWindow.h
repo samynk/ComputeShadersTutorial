@@ -51,12 +51,12 @@ private:
 
 template<HasCompute C>
 ComputeWindow<C>::ComputeWindow(GLuint width, GLuint height, const std::string& title)
-	:m_Width(width),
-	m_Height(height),
-	m_Title(title),
+	:m_Width{ width },
+	m_Height{ height },
+	m_Title{ title },
 	m_SurfaceRenderer{ 0, width, height,"shaders/fullscreen_quad.vert","shaders/fullscreen_quad.frag" },
 	m_pWindow{ nullptr },
-	m_Compute{width,height}
+	m_Compute{ width, height}
 {
 
 }
