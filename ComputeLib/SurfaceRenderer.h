@@ -10,6 +10,15 @@ public:
 	SurfaceRenderer(GLuint bindingId, GLuint width, GLuint height, const std::string& vertexShader, const std::string fragmentShader);
     ~SurfaceRenderer();
 
+    // not meant to be copied or moved
+     // Delete copy constructor and copy assignment operator
+    SurfaceRenderer(const SurfaceRenderer&) = delete;
+    SurfaceRenderer& operator=(const SurfaceRenderer&) = delete;
+
+    // Delete move constructor and move assignment operator
+    SurfaceRenderer(SurfaceRenderer&&) = delete;
+    SurfaceRenderer& operator=(SurfaceRenderer&&) = delete;
+
     void init();
     void bindAsCompute() const;
     void bindAsCompute(GLuint bindingSlot) const;
