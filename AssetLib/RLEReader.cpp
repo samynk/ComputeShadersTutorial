@@ -5,6 +5,7 @@
 #include <iostream>
 #include <cctype>
 #include <vector>
+#include <algorithm>
 
 RLEReader::RLEReader(const std::string& rleFile)
 	:m_RLEFile{ rleFile }
