@@ -61,7 +61,18 @@ A list of sphere data is uploaded as an SSBO in this project. For each pixel of 
 
  The spheres are all flat shaded, as there are no lights yet.
 
- ## Project 07 - Raytracer sphere scene with camera (in progress)
+## Project 07 - Raytracer sphere scene with camera (in progress)
 
- Interactivity makes everything nicer. This project adds a camera to the raytracer and makes it possible to move around. This project also has a hardcoded light position that is used for a simple cosine law diffuse light effect.
+Interactivity makes everything nicer. This project adds a camera to the raytracer and makes it possible to move around. This project also has a hardcoded light position that is used for a simple cosine law diffuse light effect.
+ 
+## Project 08 - Raytracer with bounces
+
+Bounces are added to the raytracer. A simple approach was chosen here where an SSBO with a Raytracer
+ struct is the main datastructure which keeps track of the necessary data to calculate one pixel:
+ 
+ - ray origin: camera position for the first bounce.
+ - depth value (unused so far)
+ - ray direction: the direction of the ray.
+ - color (sum of all the contributions of all the bounces), set to background color at the start.
+ - rayHits : number of hits that ray encountered.
  
