@@ -68,7 +68,7 @@ void SurfaceRenderer::createShaderProgram(const std::string& vertexShader, const
 		glGetProgramInfoLog(m_ProgramID, 1024, nullptr, infoLog.data());
 		throw std::runtime_error("ERROR::PROGRAM::LINKING_FAILED\n" + std::string(infoLog.begin(), infoLog.end()));
 	}
-
+	m_screenTextureLoc = glGetUniformLocation(m_ProgramID, "screenTexture");
 	// Shaders can be deleted after linking
 	glDeleteShader(vertexShaderID);
 	glDeleteShader(fragmentShaderID);
@@ -99,7 +99,7 @@ void SurfaceRenderer::drawQuadWithTexture()
 {
 	// Set the texture uniform
 	glUseProgram(m_ProgramID);
-	glUniform1i(glGetUniformLocation(m_ProgramID, "screenTexture"), 0);
+	glUniform1i(m_screenTextureLoc, 0);
 	m_FullScreenImage.bindAsTexture();
 
 	// Draw the quad

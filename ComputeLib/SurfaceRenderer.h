@@ -39,6 +39,7 @@ private:
 
     std::string m_VertexShaderFile;
     std::string m_FragmentShaderFile;
+    GLint m_screenTextureLoc{ 0 };
 
     float quadVertices[24] = {
         // Positions   // TexCoords
