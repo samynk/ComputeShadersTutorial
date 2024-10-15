@@ -29,6 +29,7 @@ FetchContent_Declare(
   glm
   GIT_REPOSITORY https://github.com/g-truc/glm.git
   GIT_TAG        1.0.1
+   GIT_SHALLOW TRUE
 )
 FetchContent_MakeAvailable(glm)
 
@@ -73,10 +74,12 @@ set_target_properties(libglew_shared PROPERTIES
 set_target_properties(libglew_static PROPERTIES
         FOLDER "External Libraries" )
 
-# Include sub-projects.
+# common libraries
 add_subdirectory("ComputeLib")
 add_subdirectory("AssetLib")
-#add_subdirectory("3DLib")
+add_subdirectory("3DLib")
+
+# Include sub-projects.
 add_subdirectory("Project0")
 add_subdirectory("Project1")
 add_subdirectory("Project2")
@@ -85,5 +88,4 @@ add_subdirectory("Project4")
 add_subdirectory("Project5")
 add_subdirectory("Project6")
 add_subdirectory("Project7")
-
-add_subdirectory("3DLib")
+add_subdirectory("Project8")
