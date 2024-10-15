@@ -1,4 +1,4 @@
-﻿add_library(3DLib STATIC  "3DLib.h" "Camera.h" "Camera.cpp")
+﻿add_library(3DLib STATIC "Camera.h" "Camera.cpp")
 
 target_include_directories(3DLib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
