@@ -13,6 +13,7 @@
 #include <memory>
 #include <stdexcept>
 #include <iostream>
+#include <sstream>
 
 
 struct GLFWDeleter {
@@ -28,7 +29,7 @@ template<HasCompute C>
 class ComputeWindow
 {
 public:
-	ComputeWindow(GLuint width, GLuint height, const std::string& title);
+	ComputeWindow(GLuint width, GLuint height, const std::string& title, bool vsync = true);
 
 	void init();
 	void renderLoop();
@@ -40,6 +41,11 @@ public:
 	bool isMovingRight();
 
 private:
+	void showFPS();
+	double m_LastTime{ 0 };
+	uint16_t m_NrOfFrames{ 0 };
+	bool m_VSync;
+
 	GLuint m_Width;
 	GLuint m_Height;
 	std::string m_Title;
@@ -51,13 +57,14 @@ private:
 };
 
 template<HasCompute C>
-ComputeWindow<C>::ComputeWindow(GLuint width, GLuint height, const std::string& title)
+ComputeWindow<C>::ComputeWindow(GLuint width, GLuint height, const std::string& title, bool vsync)
 	:m_Width{ width },
 	m_Height{ height },
 	m_Title{ title },
 	m_SurfaceRenderer{ 0, width, height,"shaders/fullscreen_quad.vert","shaders/fullscreen_quad.frag" },
 	m_pWindow{ nullptr },
-	m_Compute{ width, height}
+	m_Compute{ width, height},
+	m_VSync{true}
 {
 
 }
@@ -74,16 +81,17 @@ void ComputeWindow<C>::init()
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+		
 
 		m_pWindow = glfwCreateWindow(m_Width, m_Height, m_Title.c_str(), nullptr, nullptr);
 		if (!m_pWindow) {
 			throw std::runtime_error("Failed to create GLFW window.");
 		}
-		
 		glfwMakeContextCurrent(m_pWindow);
+		glfwSwapInterval(m_VSync?1:0);
+		
 		glfwSetWindowUserPointer(m_pWindow, this);
-		// glfwSwapInterval(1);
-
+		
 		// Initialize GLEW
 		glewExperimental = GL_TRUE; // Needed for core profile
 		GLenum glewStatus = glewInit();
@@ -92,29 +100,7 @@ void ComputeWindow<C>::init()
 		}
 		m_SurfaceRenderer.init();
 		m_Compute.init(m_SurfaceRenderer);
-
-		
-		
-
-		/*
-		GLint workGroupCount[3];
-		glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_COUNT, 0, &workGroupCount[0]); // X dimension
-		glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_COUNT, 1, &workGroupCount[1]); // Y dimension
-		glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_COUNT, 2, &workGroupCount[2]); // Z dimension
-
-		std::cout << "Maximum number of work groups (X): " << workGroupCount[0] << std::endl;
-		std::cout << "Maximum number of work groups (Y): " << workGroupCount[1] << std::endl;
-		std::cout << "Maximum number of work groups (Z): " << workGroupCount[2] << std::endl;
-
-		GLint workGroupSize[3];
-		glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_SIZE, 0, &workGroupSize[0]); // X dimension
-		glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_SIZE, 1, &workGroupSize[1]); // Y dimension
-		glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_SIZE, 2, &workGroupSize[2]); // Z dimension
-
-		std::cout << "Maximum work group size (X): " << workGroupSize[0] << std::endl;
-		std::cout << "Maximum work group size (Y): " << workGroupSize[1] << std::endl;
-		std::cout << "Maximum work group size (Z): " << workGroupSize[2] << std::endl;
-		*/
+		m_LastTime = glfwGetTime();
 	}
 	catch (const std::exception& e) {
 		std::cerr << "An exception occurred: " << e.what() << std::endl;
@@ -136,10 +122,30 @@ void ComputeWindow<C>::renderLoop()
 
 		m_Compute.compute(m_SurfaceRenderer);
 		m_SurfaceRenderer.drawQuadWithTexture();
-
+		showFPS();
 		// Swap buffers and poll IO events
 		glfwSwapBuffers(m_pWindow);
 		glfwPollEvents();
+	}
+}
+
+template<HasCompute C>
+void ComputeWindow<C>::showFPS() {
+	double currentTime = glfwGetTime();
+	double delta = currentTime - m_LastTime;
+	m_NrOfFrames++;
+	if (delta >= 1.0) { // If last cout was more than 1 sec ago
+		// cout << 1000.0 / double(m_NrOfFrames) << endl;
+
+		uint32_t fps =static_cast<uint32_t>(double(m_NrOfFrames) / delta);
+
+		std::stringstream ss;
+		ss << m_Title << " [" << fps << " FPS]";
+
+		glfwSetWindowTitle(m_pWindow, ss.str().c_str());
+
+		m_NrOfFrames = 0;
+		m_LastTime = currentTime;
 	}
 }
 
