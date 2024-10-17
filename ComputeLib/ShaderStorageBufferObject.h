@@ -13,6 +13,7 @@ class ShaderStorageBufferObject
 {
 public:
 	ShaderStorageBufferObject(GLuint size);
+	ShaderStorageBufferObject(const std::vector<T>& data);
 	ShaderStorageBufferObject(GLuint m_BindingID, GLuint width, GLuint height, GLint scaleFactor);
 	ShaderStorageBufferObject(const std::string& file, GLuint m_BindingID, GLuint width, GLuint height, GLint scaleFactor);
 	~ShaderStorageBufferObject();
@@ -45,6 +46,18 @@ ShaderStorageBufferObject<T>::ShaderStorageBufferObject(GLuint size)
 	:ShaderStorageBufferObject<T>(0, size, 1, 1)
 {
 
+}
+
+template <typename T>
+ShaderStorageBufferObject<T>::ShaderStorageBufferObject(const std::vector<T>& data)
+	:m_Width{static_cast<GLuint>(data.size())},
+	m_Height{ 1 },
+	m_ScaleFactor{ 1 },
+	m_BindingID{ 0 },
+	m_SSBO_ID{ 0 }
+{
+	// copy : todo , replace with move if possible.
+	m_pInputData = data;
 }
 
 template <typename T>
@@ -90,6 +103,7 @@ void ShaderStorageBufferObject<T>::init()
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, m_SSBO_ID);
 
 	// Allocate memory for the SSBO and upload the data
+	int size = sizeof(T);
 	glBufferData(GL_SHADER_STORAGE_BUFFER, m_Width * m_Height * sizeof(T), m_pInputData.data(), GL_STATIC_DRAW);
 
 	// Bind the SSBO to a specific binding point (e.g., binding point 0)
