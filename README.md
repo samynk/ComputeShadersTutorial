@@ -75,4 +75,7 @@ Bounces are added to the raytracer. A simple approach was chosen here where an S
  - ray direction: the direction of the ray.
  - color (sum of all the contributions of all the bounces), set to background color at the start.
  - rayHits : number of hits that ray encountered.
- 
+   
+## Project 09 - Raytracer with Triangle meshes
+
+This project uses the ObjReader in the AssetLib to load and render a 3D mesh. Event with a limited number of triangles, the need for acceleration structures and culling invisible triangles becomes apparent. The Möller–Trumbore intersection algorithm is used here to calculate the intersection  between a ray and a triangle.
