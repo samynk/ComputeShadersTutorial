@@ -61,6 +61,8 @@ void ObjRayTracer::compute(const SurfaceRenderer& renderer)
 
 	// bounce 1
 	computeBounce(renderer);
+	// bounce 2
+	computeBounce(renderer);
 	writeOutput(renderer);
 }
 

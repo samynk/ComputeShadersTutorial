@@ -37,6 +37,8 @@ public:
     ObjReader(const std::string& filePath)
         : location(filePath), lineNumber(0) {}
 
+
+
     void parseObjFile();
     void buildOutputMesh();
 
