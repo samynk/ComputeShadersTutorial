@@ -82,7 +82,7 @@ namespace ComputeShaderTutorial
         {
             // to do replace with actual time
             m_T += 0.005f;
-            m_Phi = float.Pi / 2 + float.Pi  * (float)Math.Sin(m_T);
+            m_Phi = float.Pi / 2 + float.Pi/6  * (float)Math.Sin(m_T);
 
             m_Camera.SetPhi(m_Phi);
             m_Camera.Update();

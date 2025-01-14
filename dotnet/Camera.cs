@@ -54,6 +54,7 @@ namespace ComputeShaderTutorial
             // Store the axes as columns: [cameraRight, upAxis, forwardAxis, translation=0]
             _cameraReference.Column0 = new Vector4(cameraRight, 0.0f);
             _cameraReference.Column1 = new Vector4(_worldUpAxis, 0.0f);
+            _cameraReference.Column2 = new Vector4(forwardAxis, 0.0f);
         }
 
         public void SetPhi(float phi)
