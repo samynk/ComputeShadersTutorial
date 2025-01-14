@@ -3,3 +3,8 @@ out/
 
 # Ignore everything in the .vs folder (Visual Studio files)
 .vs/
+
+# Ignore compilation of dotnet project
+dotnet/bin
+# Ignore nuget cache for dotnet project
+dotnet/obj

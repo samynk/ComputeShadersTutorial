@@ -1,0 +1,9 @@
+#N dependentsyringefollowedbylx200.rle
+#C https://conwaylife.com/wiki/Syringe
+#C https://www.conwaylife.com/patterns/dependentsyringefollowedbylx200.rle
+x = 59, y = 61, rule = B3/S23
+46b2o$47bo$47b3o16$48b2o$48b2o2$55bob2o$55b2obo3$39bob2o$o38b2obo$b2o$
+2o4$18bo$16b3o$15bo$15b2o$2o$bo$bob2o$2bo2bo23bo$3b2o24bo$18b2o9b3ob2o
+$18b2o11bob2o5$57b2o$57b2o$21b2obo6b2o$21b2ob3o3bobo$27bo2bo$21b2ob3o
+2b2o26b2o$22bobo32b2o$10b2o10bobo18b2o$10b2o11bo18bobo$42bo$41b2o8b2o$
+51bo$52b3o$54bo!
