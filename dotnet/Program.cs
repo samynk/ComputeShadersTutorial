@@ -12,7 +12,8 @@ namespace ComputeShaderTutorial
             //Project04 window = new Project04("Boids", 1024, 1024);
             //Project05 window = new Project05("Camera rays",512,512);
             //Project06 window = new Project06("Sphere scene", 512, 512);
-            Project07 window = new Project07("Sphere scene with camera", 512, 512);
+            //Project07 window = new Project07("Sphere scene with camera", 512, 512);
+            Project08 window = new Project08("Sphere scene with bounces", 1024,1024);
             window.Run();
         }
     }
@@ -25,7 +26,7 @@ namespace ComputeShaderTutorial
         public ComputeShaderWindow(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings)
             : base(gameWindowSettings, nativeWindowSettings)
         {
-            renderer = new SurfaceRenderer(0, base.Size.X, base.Size.Y,
+            renderer = new SurfaceRenderer(0, base.ClientSize.X, base.ClientSize.Y,
                "Resources/shaders/fullscreen_quad.vert",
                "Resources/shaders/fullscreen_quad.frag");
 

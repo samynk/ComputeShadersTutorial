@@ -42,7 +42,7 @@ namespace ComputeShaderTutorial
         public Project07(String title, int w, int h) : base(title, w, h)
         {
             m_CameraRays = new ComputeShader("Resources/computeshaders/raytracer2/CameraRays.glsl");
-            m_ClearDepthBuffer = new ComputeShader("Resources/computeShaders/ClearDepthBuffer.glsl");
+            m_ClearDepthBuffer = new ComputeShader("Resources/computeshaders/ClearDepthBuffer.glsl");
             m_SphereRayTracer = new ComputeShader("Resources/computeshaders/raytracer2/SphereRayTracer.glsl");
             m_DepthBuffer = new ShaderStorageBufferObject<float>(0, GetClientWidth(), GetClientHeight(), 1);
             m_Rays = new ShaderStorageBufferObject<Ray>(0, GetClientWidth(), GetClientHeight(), 1);

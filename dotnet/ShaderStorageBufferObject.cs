@@ -114,7 +114,7 @@ namespace ComputeShaderTutorial
 
             // Calculate size in bytes
             int typeSize = Marshal.SizeOf(typeof(T));
-            IntPtr totalSize = (IntPtr)(_width * _height * typeSize);
+            int totalSize = (_width * _height * typeSize);
 
             // Upload data to GPU with STATIC_DRAW usage
             // OpenTK 4.x has an overload that allows uploading a T[] directly

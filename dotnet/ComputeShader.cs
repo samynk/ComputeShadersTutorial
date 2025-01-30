@@ -85,6 +85,13 @@ namespace ComputeShaderTutorial
                 Console.WriteLine("ComputeShader Link Error:\n" + infoLog);
             }
 
+            var sizes = new int[3];
+            GL.GetProgram(_computeProgramID, (GetProgramParameterName)All.ComputeWorkGroupSize, sizes);
+
+            _localSizeX = sizes[0];
+            _localSizeY = sizes[1];
+            _localSizeZ = sizes[2];
+
             // Detach and delete the shader (it's now linked into the program)
             GL.DetachShader(_computeProgramID, _shaderID);
             GL.DeleteShader(_shaderID);
