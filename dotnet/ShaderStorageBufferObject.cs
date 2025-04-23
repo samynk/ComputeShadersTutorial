@@ -128,6 +128,28 @@ namespace ComputeShaderTutorial
             GL.BindBuffer(BufferTarget.ShaderStorageBuffer, 0);
         }
 
+        public T[] GetRawData()
+        {
+            return _pInputData;
+        }
+
+        public void Download()
+        {
+            Download(_width * _height);
+        }
+
+        public void Download(int nrOfResults)
+        {
+            GL.BindBuffer(BufferTarget.ShaderStorageBuffer, _ssboID);
+            int typeSize = Marshal.SizeOf(typeof(T));
+            int totalSize = (nrOfResults * typeSize);
+            GL.GetBufferSubData(BufferTarget.ShaderStorageBuffer,
+                                IntPtr.Zero,                           // offset in bytes
+                                totalSize,         // size in bytes
+                                _pInputData);                              // destination array
+            GL.BindBuffer(BufferTarget.ShaderStorageBuffer, 0);
+        }
+
         /// <summary>Width of the buffer’s data in 'T' elements (after scaling).</summary>
         public int GetBufferWidth() => _width;
 
@@ -180,6 +202,11 @@ namespace ComputeShaderTutorial
         public void Set(int index, T value)
         {
             _pInputData[index] = value;
+        }
+
+        public T Get(int index)
+        {
+            return _pInputData[index];
         }
 
         /// <summary>

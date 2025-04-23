@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 namespace ComputeShaderTutorial
 {
     using System.IO;
+    using System.Text.RegularExpressions;
     using OpenTK.Graphics.OpenGL4;
     using OpenTK.Mathematics;
 
@@ -37,7 +38,7 @@ namespace ComputeShaderTutorial
             _fileLocation = fileLocation;
             if (File.Exists(_fileLocation))
             {
-                _shaderContents = File.ReadAllText(_fileLocation);
+                _shaderContents = File.ReadAllText(_fileLocation)+"\n";
                 _sourceValid = true;
                 _sourceLength = _shaderContents.Length;
             }
@@ -61,6 +62,7 @@ namespace ComputeShaderTutorial
 
             // Create and compile the compute shader
             _shaderID = GL.CreateShader(ShaderType.ComputeShader);
+            
             GL.ShaderSource(_shaderID, _shaderContents);
             GL.CompileShader(_shaderID);
 
@@ -85,6 +87,10 @@ namespace ComputeShaderTutorial
                 Console.WriteLine("ComputeShader Link Error:\n" + infoLog);
             }
 
+            // Detach and delete the shader (it's now linked into the program)
+            GL.DetachShader(_computeProgramID, _shaderID);
+            GL.DeleteShader(_shaderID);
+
             var sizes = new int[3];
             GL.GetProgram(_computeProgramID, (GetProgramParameterName)All.ComputeWorkGroupSize, sizes);
 
@@ -92,10 +98,23 @@ namespace ComputeShaderTutorial
             _localSizeY = sizes[1];
             _localSizeZ = sizes[2];
 
-            // Detach and delete the shader (it's now linked into the program)
-            GL.DetachShader(_computeProgramID, _shaderID);
-            GL.DeleteShader(_shaderID);
+            
             _shaderID = 0;
+        }
+
+        public int GetLocalSizeX()
+        {
+            return _localSizeX;
+        }
+
+        public int GetLocalSizeY()
+        {
+            return _localSizeY;
+        }
+
+        public int GetLocalSizeZ()
+        {
+            return _localSizeY;
         }
 
         /// <summary>
@@ -122,7 +141,12 @@ namespace ComputeShaderTutorial
             GL.DispatchCompute(wgSizeX, wgSizeY, zGroups);
 
             // In many cases, you'll want a memory barrier here, depending on how you use the results next
-            GL.MemoryBarrier(MemoryBarrierFlags.AllBarrierBits);
+            GL.MemoryBarrier(MemoryBarrierFlags.ShaderStorageBarrierBit);
+        }
+
+        public void ComputeWorkgroups(int wgSizeX, int wgSizeY=1, int wgSizeZ=1)
+        {
+            GL.DispatchCompute(wgSizeX, wgSizeY, wgSizeZ);
         }
 
         /// <summary>

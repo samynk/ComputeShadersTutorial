@@ -10,7 +10,7 @@ namespace ComputeShaderTutorial
 {
     internal abstract class ComputeWindow : GameWindow
     {
-        private SurfaceRenderer renderer;
+        private SurfaceRenderer _renderer;
         private int m_Width;
         private int m_Height;
 
@@ -27,7 +27,7 @@ namespace ComputeShaderTutorial
             m_Width = width;
             m_Height = height;
 
-            renderer = new SurfaceRenderer(0, m_Width, m_Height,
+            _renderer = new SurfaceRenderer(0, m_Width, m_Height,
               "Resources/shaders/fullscreen_quad.vert",
               "Resources/shaders/fullscreen_quad.frag");
         }
@@ -36,7 +36,7 @@ namespace ComputeShaderTutorial
         {
             base.OnLoad();
             VSync = VSyncMode.On;
-            renderer.Init();
+            _renderer.Init();
             Init();
         }
 
@@ -50,7 +50,7 @@ namespace ComputeShaderTutorial
 
         public void BindAsCompute(int bindId)
         {
-            renderer.BindAsCompute(bindId);
+            _renderer.BindAsCompute(bindId);
         }
 
         protected override void OnRenderFrame(FrameEventArgs args)
@@ -58,7 +58,7 @@ namespace ComputeShaderTutorial
             base.OnRenderFrame(args);
 
             Compute();
-            renderer.DrawQuadWithTexture();
+            _renderer.DrawQuadWithTexture();
             SwapBuffers();
         }
     }

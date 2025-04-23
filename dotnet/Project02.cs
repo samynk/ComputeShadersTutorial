@@ -37,8 +37,6 @@ namespace ComputeShaderTutorial
 
         protected override void Compute()
         {
-            
-
             // Dispatch compute work and draw results here
             m_ConvertComputeShader.Use();
             m_ConvertComputeShader.SetUniformInteger(m_ScaleFactorLocation, m_GridData.GetScaleFactor());

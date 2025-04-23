@@ -218,10 +218,10 @@ namespace ComputeShaderTutorial
                 var result = new byte[pixelData.Length * 4];
                 for (int i = 0; i < pixelData.Length; i++)
                 {
-                    result[i * 4 + 0] = pixelData[i].R;
-                    result[i * 4 + 1] = pixelData[i].G;
-                    result[i * 4 + 2] = pixelData[i].B;
-                    result[i * 4 + 3] = pixelData[i].A;
+                    result[i * 4 + 0] = pixelData[i].A;
+                    result[i * 4 + 1] = pixelData[i].B;
+                    result[i * 4 + 2] = pixelData[i].G;
+                    result[i * 4 + 3] = pixelData[i].R;
                 }
 
                 var imageID = GL.GenTexture();
@@ -238,7 +238,7 @@ namespace ComputeShaderTutorial
                     _width,
                     _height,
                     0,
-                    PixelFormat.Bgra,
+                    PixelFormat.Rgba,
                     PixelType.UnsignedByte,
                     pixelData
                 );

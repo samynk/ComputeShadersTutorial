@@ -19,8 +19,8 @@ void main() {
         } else {
             coord = gid + ivec2(0, offset);
         }
-        color += imageLoad(inputImage, coord).xyz * kernel[offset + 3];
+        color += (imageLoad(inputImage, coord).rgb * kernel[offset + 3]);
     }
 	
-    imageStore(outputImage, gid, vec4(color,1));
+    imageStore(outputImage, gid, vec4(color.rgb,1));
 }
