@@ -7,4 +7,4 @@ set(SHADERS
 )
 
 add_executable(${ProjectName} "Project08.cpp"  ${SHADERS} "SphereRayTracer.cpp" "SphereRayTracer.h")
-configure(${ProjectName} "08_RaytracerWithBounce")
+configure(${ProjectName} "Projects/08_RaytracerWithBounce")

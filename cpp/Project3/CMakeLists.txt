@@ -5,5 +5,5 @@ set(SHADERS
 )
 
 add_executable(${ProjectName} "Project3.cpp"  "GameOfLife.h" "GameOfLife.cpp" ${SHADERS})
-configure(${ProjectName} "03_ConwayGameOfLife")
+configure(${ProjectName} "Projects/03_ConwayGameOfLife")
 

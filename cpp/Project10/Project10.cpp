@@ -1,10 +1,10 @@
-﻿#include "ComputeWindow.h"
-#include "SphereRayTracer.h"
+#include "ComputeWindow.h"
+#include "ObjRayTracer.h"
 
 int main()
 {
 	try {
-		ComputeWindow<SphereRayTracer> window{ 1024,1024,"Raytracer with spheres", false };
+		ComputeWindow<ObjRayTracer> window{ 1024,1024,"Raytracer with obj files", false };
 		window.init();
 		window.renderLoop();
 		window.close();

@@ -55,6 +55,7 @@ namespace ComputeShaderTutorial
         {
             float[] values = _buffer1.GetRawData();
 
+            // simpe CPU single threaded for loop.
             long[] cpuSerialMeasurements = new long[20];
             for (int si = 0; si < cpuSerialMeasurements.Length; ++si)
             { 
@@ -66,6 +67,7 @@ namespace ComputeShaderTutorial
             long meanCPUSerial = (long)cpuSerialMeasurements.Average();
             Console.WriteLine($"CPU result serial - Elapsed: {meanCPUSerial:F3} ms");
 
+            // parallel
             long[] cpuParallelMeasurements = new long[20];
             for (int si = 0; si < cpuParallelMeasurements.Length; ++si)
             {

@@ -5,5 +5,5 @@ set(SHADERS
 )
 
 add_executable(${ProjectName} "Main.cpp" "ComputeBlur.h" "ComputeBlur.cpp" ${SHADERS})
-configure(${ProjectName} "01_BlurFilter")
+configure(${ProjectName} "Projects/01_BlurFilter")
 

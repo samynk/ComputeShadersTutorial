@@ -6,6 +6,7 @@
 
 #include <string>
 #include <vector>
+#include <random>
 
 
 template<typename T>
@@ -28,6 +29,13 @@ public:
 	void bindAsCompute(GLuint m_BindingID);
 	void setAsCheckerBoard();
 	void set(int index, T value);
+	void download();
+
+	void randomize(T min, T max) requires std::is_arithmetic_v<T>;
+
+	std::vector<T>& getData() {
+		return m_pInputData;
+	}
 
 	GLint size() const;
 private:
@@ -178,4 +186,50 @@ template <typename T>
 GLint ShaderStorageBufferObject<T>::size() const
 {
 	return m_pInputData.size();
+}
+
+template <typename T>
+void ShaderStorageBufferObject<T>::randomize(T min, T max)  
+	requires std::is_arithmetic_v<T>
+{
+	std::mt19937 rng{ std::random_device{}() };
+
+	if constexpr (std::is_integral_v<T>) {
+		std::uniform_int_distribution<T> dist(min, max);
+		std::generate(m_pInputData.begin(), m_pInputData.end(),
+			[&]() { return dist(rng); });
+	}
+	else {
+		std::uniform_real_distribution<T> dist(min, max);
+		std::generate(m_pInputData.begin(), m_pInputData.end(),
+			[&]() { return dist(rng); });
+	}
+}
+
+template <typename T>
+void ShaderStorageBufferObject<T>::download()
+{
+	if (m_SSBO_ID == 0)
+	{
+		// std::cerr << "Error: Trying to download from an uninitialized buffer.\n";
+		return;
+	}
+
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, m_SSBO_ID);
+
+	// Map the buffer to read from GPU
+	void* ptr = glMapBuffer(GL_SHADER_STORAGE_BUFFER, GL_READ_ONLY);
+	if (!ptr)
+	{
+		// std::cerr << "Error: Failed to map SSBO for reading.\n";
+		glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+		return;
+	}
+
+	// Copy the data into the CPU-side buffer
+	std::memcpy(m_pInputData.data(), ptr, size() * sizeof(T));
+
+	// Unmap and unbind
+	glUnmapBuffer(GL_SHADER_STORAGE_BUFFER);
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 }

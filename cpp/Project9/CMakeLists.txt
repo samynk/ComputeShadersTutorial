@@ -7,4 +7,4 @@ set(SHADERS
 )
 
 add_executable(${ProjectName}  ${SHADERS} "ObjRayTracer.cpp" "ObjRayTracer.h" "Project09.cpp" "MeshSSBO.h" "MeshSSBO.cpp")
-configure(${ProjectName} "09_RaytracerWithObjMesh")
+configure(${ProjectName} "Projects/09_RaytracerWithObjMesh")

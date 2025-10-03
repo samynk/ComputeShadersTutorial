@@ -8,4 +8,4 @@ set(SHADERS
 )
 
 add_executable(${ProjectName} "Project4.cpp"  "FlockCompute.h" "FlockCompute.cpp" ${SHADERS})
-configure(${ProjectName} "04_Flocking")
+configure(${ProjectName} "Projects/04_Flocking")

@@ -90,3 +90,6 @@ add_subdirectory("Project6")
 add_subdirectory("Project7")
 add_subdirectory("Project8")
 add_subdirectory("Project9")
+add_subdirectory("Project10")
+
+add_subdirectory("HandsOn/HandsOn02")

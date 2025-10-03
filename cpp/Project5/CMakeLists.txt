@@ -9,6 +9,6 @@ set(SHADERS
 )
 message(${SHADERS})
 add_executable(Project5 ${SOURCES} ${SHADERS} )
-configure(Project5 "05_RaytracingCameraRays")
+configure(Project5 "Projects/05_RaytracingCameraRays")
 
 

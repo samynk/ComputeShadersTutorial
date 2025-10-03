@@ -1,6 +1,11 @@
 #version 430 core
 
-layout(local_size_x = 16, local_size_y = 16, local_size_z = 1) in;
+#define LOCAL_SIZE 16
+#define WORKGROUP_SIZE LOCAL_SIZE*LOCAL_SIZE
+#define MAX_LOCAL_CANDIDATES  128
+
+
+layout(local_size_x = LOCAL_SIZE, local_size_y = LOCAL_SIZE, local_size_z = LOCAL_SIZE) in;
 
 struct Ray{
 	vec4 originAndT;
@@ -80,7 +85,18 @@ bool intersectRayTriangleMT(vec3 orig, vec3 dir, vec3 v0, vec3 v1, vec3 v2, out 
     return false; // This means there is a line intersection but not a ray intersection.
 }
 
-bool intersectRayTriangleGA(vec3 orig, vec3 d, vec3 A, vec3 B, vec3 C, out float t)
+int signbit(float x) {
+    // reinterpret the float’s bits as unsigned, shift the MSB into LSB
+    return int(floatBitsToUint(x) >> 31u);
+}
+
+// vector: per-component 0/1
+ivec4 signbit(vec4 v) {
+    uvec4 bits = floatBitsToUint(v);
+    return ivec4(bits >> 31u);
+}
+
+bool intersectRayTriangleGA(vec3 orig, vec3 d, vec3 A, vec3 B, vec3 C, out vec4 V)
 {
     // Epsilon for floating point comparison
 	float EPSILON = 1e-6;
@@ -90,44 +106,44 @@ bool intersectRayTriangleGA(vec3 orig, vec3 d, vec3 A, vec3 B, vec3 C, out float
     vec3 b = B-orig;
     vec3 c = C-orig;
 
-	vec4 V;
     const vec3 aob = cross(a,b);
+	const vec3 cod = cross(d,c);
+
 	V.w = dot( aob, c);
 	V.z = dot( aob, d) ;
-			
-	const vec3 cod = cross(d , c);
 	V.x = -dot( cod, b);
 	V.y =  dot( cod, a);
+
+	ivec4 Vs = signbit(V);
 			
-	if ( any( lessThan(V,vec4(EPSILON)))) 
-	{
-		return false;
-	}
-	float rayVol = V.x + V.y + V.z;
-	float invDet = 1.0f / rayVol;
-	t = V.w * invDet;
-	return true;
+	return ( (Vs.x+Vs.y+Vs.z+Vs.w) == 0);
+
 }
 
 
+    // Shared buffers per work-group
+shared uint localCount[WORKGROUP_SIZE];
+shared uint localCands[WORKGROUP_SIZE][MAX_LOCAL_CANDIDATES];
+shared vec4 localVolumes[WORKGROUP_SIZE][MAX_LOCAL_CANDIDATES];
+
 void main() {
-    ivec2 gid = ivec2(gl_GlobalInvocationID.xy);
-    uint index = gid.y * imgDimension.x + gid.x;
+    uint index = gl_GlobalInvocationID.y * imgDimension.x + gl_GlobalInvocationID.x;
 
 	if ( rays[index].nullRay){
 		return;
 	}
+
+	 // Initialize the per-ray local count
+	uint localIndex = gl_LocalInvocationID.x * LOCAL_SIZE + gl_LocalInvocationID.y;
+	
+    localCount[localIndex] = 0;
+    barrier();
 	
 	vec3 rayOrigin = rays[index].originAndT.xyz;
 	vec3 rayDirection = rays[index].direction.xyz;
-	float currentT = rays[index].originAndT.w;
 	
-	bool write = false;
-	vec4 color = vec4(0,0,0,1);
 
-	
-	bool found = false;
-	int iTriangle = -1;
+	uint startSi = gl_GlobalInvocationID.z * LOCAL_SIZE ;
 	for(int si = 0; si < nrOfTriangles; ++si)
 	{
 		int i1 = indices[si*3];
@@ -137,26 +153,41 @@ void main() {
 		vec3 p1 = vertices[i1].loc;
 		vec3 p2 = vertices[i2].loc;
 		vec3 p3 = vertices[i3].loc;
-
-		float t0;
 		
-		if( intersectRayTriangleGA(rayOrigin, rayDirection, p1, p2, p3, t0) )
-			
-			if ( t0 < currentT) {
-				
-				currentT = t0;
-				iTriangle = si;
-				found = true;
+		vec4 V;
+		if( intersectRayTriangleGA(rayOrigin, rayDirection, p1, p2, p3, V) )
+		{		
+			uint slot = atomicAdd(localCount[localIndex],1);
+			if (slot < MAX_LOCAL_CANDIDATES) {
+				localCands[localIndex][slot] = si;
+				localVolumes[localIndex][slot] = V;
 			}
+		}
 	}
+	barrier();
 
 	vec3 normal;
 	vec3 currentPos =  vec3(0,0,0);
-	if ( found )
+	float currentT = rays[index].originAndT.w;
+	uint closestTri = -1;
+	for(int si = 0; si < localCount[localIndex]; ++si)
 	{
-		int i1 = indices[iTriangle*3];
-		int i2 = indices[iTriangle*3+1];
-		int i3 = indices[iTriangle*3+2];
+		vec4 V = localVolumes[localIndex][si];
+		float invRayVol =1.0f/( V.x+V.y+V.z);
+		float t = V.w * invRayVol;
+		if ( t < currentT )
+		{
+			currentT = t;
+			closestTri = si;
+		}
+	}
+
+	vec4 color = vec4(0,0,0,1);
+	if (closestTri > -1)
+	{
+		int i1 = indices[closestTri*3];
+		int i2 = indices[closestTri*3+1];
+		int i3 = indices[closestTri*3+2];
 
 		vec3 p1 = vertices[i1].loc;
 		vec3 p2 = vertices[i2].loc;
@@ -167,14 +198,16 @@ void main() {
 		vec3 lightVec = normalize ( lightPos - currentPos );
 		float Id = clamp(dot(lightVec,normal),0.1,1);
 		// hardcoded color.
-		color = vec4(Id * vec3(1,0,1),1);
+		color = vec4(Id * vec3(1,0.25,1),1);
+
+		rays[index].originAndT.xyz = currentPos + 0.001*rays[index].direction.xyz;
+		rays[index].originAndT.w = maxT;
+		rays[index].direction.xyz =  rayDirection - 2*dot(normal, rayDirection)*normal ;
+		rays[index].rayHits++;
+		rays[index].color.rgb += color.rgb;
+		rays[index].color.a = 1;
+		rays[index].nullRay = false;
+	}else{
+		rays[index].nullRay = true;
 	}
-	
-	rays[index].originAndT.xyz = currentPos + 0.001*rays[index].direction.xyz;
-	rays[index].originAndT.w = maxT;
-	rays[index].direction.xyz =  rayDirection - 2*dot(normal, rayDirection)*normal ;
-	rays[index].rayHits += int(found);
-	rays[index].color.rgb += color.rgb;
-	rays[index].color.a = 1;
-	rays[index].nullRay = !found;	
 }
