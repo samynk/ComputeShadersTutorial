@@ -24,7 +24,8 @@ namespace ComputeShaderTutorial
             //Project11 window = new Project11("Map function", 256 * 10);
             // window.Run();
             //HandsOn02 console = new HandsOn02();
-            HandsOn03 console = new HandsOn03("Raytracer",512,512); // ray tracer 
+            //HandsOn03 console = new HandsOn03("Raytracer",512,512); // ray tracer 
+            //HandsOn04 console = new HandsOn03("Raytracer - Spheres",512,512); // ray tracer 
             console.Run();
 
 
