@@ -3,6 +3,7 @@ using OpenTK.Windowing.Desktop;
 using OpenTK.Graphics.OpenGL4;
 using System.Transactions;
 using ComputeShaderTutorial.HandsOn;
+using ComputeShaderTutorial.HandsOn.ComputeShaderTutorial;
 
 namespace ComputeShaderTutorial
 {
@@ -22,7 +23,8 @@ namespace ComputeShaderTutorial
             //Project10 window = new Project10("Reduce: Max ", 20000, 0.1f, 1000.0f);
             //Project11 window = new Project11("Map function", 256 * 10);
             // window.Run();
-            HandsOn02 console = new HandsOn02();
+            //HandsOn02 console = new HandsOn02();
+            HandsOn03 console = new HandsOn03("Raytracer",512,512); // ray tracer 
             console.Run();
 
 
