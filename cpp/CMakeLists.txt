@@ -94,3 +94,4 @@ add_subdirectory("Project10")
 
 add_subdirectory("HandsOn/HandsOn02")
 add_subdirectory("HandsOn/HandsOn03")
+add_subdirectory("HandsOn/HandsOn04")
