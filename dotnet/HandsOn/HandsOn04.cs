@@ -22,7 +22,7 @@ namespace ComputeShaderTutorial.HandsOn
         Vector4 m_Color;
     };
 
-    class HandsOm04 : ComputeWindow
+    class HandsOn04 : ComputeWindow
     {
         ComputeShader m_CameraRays;
         int m_ImgDimensionLoc1;
