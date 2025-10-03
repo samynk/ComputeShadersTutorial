@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Numerics;
 using System.Runtime.InteropServices;
 using OpenTK.Graphics.OpenGL4;
 
@@ -227,6 +228,11 @@ namespace ComputeShaderTutorial
                 GL.DeleteBuffer(_ssboID);
                 _ssboID = 0;
             }
+        }
+
+        public T[] getInputData()
+        {
+            return _pInputData;
         }
     }
 }

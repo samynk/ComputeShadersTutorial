@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AssetLib")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8ae4deb7d8f8b61606a169e777f1886918641e3d")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+59693e6a1e4f5f8a9dc5a98316b5675039424b59")]
 [assembly: System.Reflection.AssemblyProductAttribute("AssetLib")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AssetLib")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
